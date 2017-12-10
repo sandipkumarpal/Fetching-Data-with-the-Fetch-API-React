@@ -7,9 +7,26 @@ export default class App extends Component {
   
   constructor() {
     super();
-  } 
+    this.state = {
+      gifs: []
+    }
+  }
+
+  componentDidMount() {
+    fetch('http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC')
+    .then(response => response.json())
+    .then(responsedata => {
+      this.setState({
+        gifs: responsedata.data
+      });
+    })
+    .catch(error => {
+      console.log('Error fetching and parsing data', error);
+    })
+  }
 
   render() { 
+    console.log(this.state.gifs);
     return (
       <div>
         <div className="main-header">
@@ -19,7 +36,7 @@ export default class App extends Component {
           </div>   
         </div>    
         <div className="main-content">
-          <GifList />
+          <GifList gifs={this.state.gifs}/>
         </div>
       </div>
     );
